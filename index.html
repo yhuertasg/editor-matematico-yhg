@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MathFlow Pro Master Edition — Lic. MF Yesid Huertas Gordillo</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<link  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0d253f; --navy-l:#12304f; --navy-m:#1a3d5c;
+  --cyan:#00b4d8; --cyan-g:#00e5ff; --cyan-d:#0077a0;
+  --gold:#f4a261; --green:#00ff9d;
+  --text:#cde7f8; --text-d:#7aadcc; --panel:#091b2d;
+  --border:rgba(0,180,216,0.25);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--navy);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;}
+
+/* ── HEADER ── */
+header{background:linear-gradient(135deg,#050f1a 0%,var(--navy) 60%,#0a2233 100%);border-bottom:2px solid var(--cyan);padding:11px 22px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 30px rgba(0,180,216,.18);position:relative;overflow:hidden;}
+header::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(0,180,216,.03) 60px,rgba(0,180,216,.03) 61px);pointer-events:none;}
+.logo-icon{width:46px;height:46px;flex-shrink:0;background:linear-gradient(135deg,var(--cyan),var(--cyan-d));border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:19px;font-weight:900;color:var(--navy);box-shadow:0 0 20px rgba(0,180,216,.5);}
+.header-text h1{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:var(--cyan-g);text-shadow:0 0 12px rgba(0,229,255,.5);letter-spacing:2px;}
+.header-text p{font-size:11px;color:var(--text-d);letter-spacing:.7px;margin-top:2px;}
+.header-badge{margin-left:auto;background:linear-gradient(135deg,var(--cyan-d),var(--cyan));color:var(--navy);font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 0 14px rgba(0,180,216,.4);white-space:nowrap;}
+
+/* ── RIBBON ── */
+#ribbon{background:var(--navy-l);border-bottom:2px solid var(--border);}
+.tab-bar{display:flex;gap:0;padding:0 10px;background:var(--panel);border-bottom:1px solid var(--border);overflow-x:auto;}
+.tab-bar::-webkit-scrollbar{height:3px;}
+.tab-bar::-webkit-scrollbar-thumb{background:var(--cyan-d);}
+.tab-btn{background:transparent;border:none;border-bottom:3px solid transparent;color:var(--text-d);font-family:'Rajdhani',sans-serif;font-size:11.5px;font-weight:600;padding:8px 14px;cursor:pointer;letter-spacing:.7px;text-transform:uppercase;transition:all .2s;white-space:nowrap;}
+.tab-btn:hover{color:var(--cyan);}
+.tab-btn.active{color:var(--cyan-g);border-bottom-color:var(--cyan);background:rgba(0,180,216,.07);}
+.tab-panel{display:none;padding:7px 10px;}
+.tab-panel.active{display:flex;flex-wrap:wrap;gap:5px;align-items:flex-start;}
+
+/* ── RIBBON BUTTONS ── */
+.rb{display:flex;flex-direction:column;align-items:center;background:linear-gradient(180deg,var(--navy-m) 0%,#0f2840 100%);border:1px solid var(--border);border-radius:7px;padding:5px 6px 4px;cursor:pointer;min-width:58px;gap:2px;transition:all .18s;user-select:none;}
+.rb:hover{border-color:var(--cyan);box-shadow:0 0 11px rgba(0,180,216,.35);transform:translateY(-2px);}
+.rb:active{transform:translateY(0);}
+.rb-preview{min-height:28px;max-height:34px;overflow:hidden;display:flex;align-items:center;justify-content:center;width:100%;}
+.rb-preview .katex{font-size:1.05em !important;}
+.rb-preview .katex,.rb-preview .katex *{color:var(--cyan-g) !important;}
+.rb-label{font-size:9px;font-weight:600;color:var(--text-d);letter-spacing:.3px;text-transform:uppercase;text-align:center;line-height:1.2;}
+.rb-sep{width:1px;background:var(--border);margin:4px 2px;align-self:stretch;}
+
+/* Special button: matrix builder trigger */
+.rb-special{background:linear-gradient(180deg,#1a3a1a,#0f2810);border-color:rgba(0,255,157,.2);}
+.rb-special:hover{border-color:var(--green);box-shadow:0 0 11px rgba(0,255,157,.3);}
+.rb-special .rb-preview .katex,.rb-special .rb-preview .katex *{color:var(--green) !important;}
+.rb-special .rb-label{color:rgba(0,255,157,.7);}
+
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-bg.open{display:flex;}
+.modal{background:linear-gradient(135deg,#091b2d,#0d253f);border:1.5px solid var(--cyan);border-radius:14px;padding:24px 28px;min-width:340px;max-width:520px;box-shadow:0 0 60px rgba(0,180,216,.3);}
+.modal h2{font-family:'Orbitron',sans-serif;font-size:14px;color:var(--cyan-g);letter-spacing:2px;margin-bottom:16px;text-align:center;}
+.modal-row{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
+.modal-row label{font-size:12px;font-weight:600;color:var(--text-d);letter-spacing:.5px;text-transform:uppercase;min-width:90px;}
+.modal-row input[type=number],.modal-row select{background:#030d16;border:1px solid var(--border);border-radius:6px;color:var(--green);font-family:'JetBrains Mono',monospace;font-size:13px;padding:6px 10px;width:80px;outline:none;}
+.modal-row input[type=number]:focus,.modal-row select:focus{border-color:var(--cyan);}
+.modal-row select{width:auto;}
+/* cell inputs table */
+#matrix-cells{overflow-x:auto;margin:12px 0;}
+#matrix-cells table{border-collapse:separate;border-spacing:5px;}
+#matrix-cells td input{background:#030d16;border:1px solid var(--border);border-radius:5px;color:#e0f4ff;font-family:'JetBrains Mono',monospace;font-size:13px;padding:5px 6px;width:68px;outline:none;text-align:center;}
+#matrix-cells td input:focus{border-color:var(--cyan);}
+#matrix-cells td.aug-sep{border-left:2px solid var(--cyan-g);padding-left:3px;}
+.modal-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;}
+.modal-btn{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;border-radius:7px;padding:9px 18px;cursor:pointer;transition:all .2s;}
+.modal-btn-ok{background:linear-gradient(135deg,var(--cyan-d),var(--cyan));color:var(--navy);}
+.modal-btn-ok:hover{box-shadow:0 0 16px rgba(0,180,216,.5);}
+.modal-btn-cancel{background:#1a2a3a;color:var(--text-d);border:1px solid var(--border);}
+.modal-btn-cancel:hover{border-color:var(--cyan-d);}
+.modal-preview{background:#030d16;border:1px solid var(--border);border-radius:8px;padding:12px;min-height:60px;display:flex;align-items:center;justify-content:center;margin:10px 0;overflow-x:auto;}
+.modal-preview .katex{font-size:1.5em;color:#e0f4ff !important;}
+.modal-preview .katex *{color:#e0f4ff !important;}
+
+/* ── WORKSPACE ── */
+#workspace{flex:1;display:flex;flex-direction:column;gap:10px;padding:12px 16px;}
+#render-wrap{background:linear-gradient(135deg,#060f1a,#091520);border:2px solid var(--border);border-radius:13px;padding:18px 28px 16px;min-height:140px;display:flex;flex-direction:column;box-shadow:0 0 40px rgba(0,0,0,.5),inset 0 0 60px rgba(0,20,40,.5);transition:border-color .2s;}
+#render-wrap.focused{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,180,216,.12),0 0 40px rgba(0,0,0,.5);}
+.render-label{font-size:10px;color:var(--text-d);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;margin-bottom:8px;}
+#katex-display{flex:1;display:flex;align-items:center;min-height:70px;overflow-x:auto;}
+#katex-display .katex-display{margin:0;text-align:left !important;}
+#katex-display .katex{font-size:2.4em;color:#e0f4ff !important;}
+#katex-display .katex *{color:#e0f4ff !important;}
+.katex-placeholder{color:rgba(224,244,255,.2);font-size:1em;font-family:'Rajdhani',sans-serif;letter-spacing:1px;}
+#bottom-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:stretch;}
+#latex-wrap{position:relative;}
+.latex-label{position:absolute;top:7px;left:13px;font-size:9px;color:var(--cyan-d);letter-spacing:2px;font-family:'JetBrains Mono',monospace;font-weight:700;text-transform:uppercase;pointer-events:none;}
+#latex-input{width:100%;background:#030d16;border:1px solid var(--border);border-radius:10px;color:var(--green);font-family:'JetBrains Mono',monospace;font-size:13px;padding:24px 14px 10px;outline:none;resize:none;height:78px;text-shadow:0 0 8px rgba(0,255,157,.25);line-height:1.6;transition:border-color .2s;}
+#latex-input:focus{border-color:var(--cyan);}
+#actions{display:flex;flex-direction:column;gap:7px;justify-content:center;min-width:145px;}
+.action-btn{font-family:'Rajdhani',sans-serif;font-size:12.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;border-radius:7px;padding:10px 14px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+#btn-copy{background:linear-gradient(135deg,var(--cyan-d),var(--cyan));color:var(--navy);box-shadow:0 0 12px rgba(0,180,216,.28);}
+#btn-copy:hover{box-shadow:0 0 20px rgba(0,180,216,.6);transform:translateY(-2px);}
+#btn-copy.copied{background:linear-gradient(135deg,#00c853,#00e676);box-shadow:0 0 18px rgba(0,230,118,.5);}
+#btn-clear{background:linear-gradient(135deg,#1a2a3a,#1f3347);color:var(--gold);border:1px solid rgba(244,162,97,.3);}
+#btn-clear:hover{border-color:var(--gold);box-shadow:0 0 12px rgba(244,162,97,.22);transform:translateY(-2px);}
+
+footer{text-align:center;padding:6px;font-size:10.5px;color:var(--text-d);border-top:1px solid var(--border);letter-spacing:.7px;background:var(--panel);}
+footer span{color:var(--cyan);}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--panel);}
+::-webkit-scrollbar-thumb{background:var(--cyan-d);border-radius:3px;}
+
+/* helper: rb button small size for Greek letters */
+.rb.sm{min-width:46px;padding:4px 5px 3px;}
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="logo-icon">∫</div>
+  <div class="header-text">
+    <h1>MathFlow Pro Master Edition</h1>
+    <p>Lic. MF Yesid Huertas Gordillo Esp CPD — Editor Matemático Avanzado</p>
+  </div>
+  <div class="header-badge">v4.0 Pro · KaTeX</div>
+</header>
+
+<!-- ══ RIBBON ══ -->
+<div id="ribbon">
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="estructuras">Estructuras</button>
+    <button class="tab-btn" data-tab="matrices">Matrices &amp; Tensores</button>
+    <button class="tab-btn" data-tab="calculo">Cálculo Máster</button>
+    <button class="tab-btn" data-tab="estadistica">Estadística &amp; Prob.</button>
+    <button class="tab-btn" data-tab="logica">Lógica &amp; Conjuntos</button>
+    <button class="tab-btn" data-tab="constantes">Constantes &amp; Valores</button>
+    <button class="tab-btn" data-tab="griegas">Letras Griegas</button>
+    <button class="tab-btn" data-tab="agrupacion">Agrupación &amp; Casos</button>
+  </div>
+
+  <!-- ═══ TAB 1: ESTRUCTURAS ═══ -->
+  <div class="tab-panel active" id="tab-estructuras">
+    <button class="rb" data-ins="\frac{ }{ }"><div class="rb-preview" data-r="\dfrac{a}{b}"></div><span class="rb-label">Fracción</span></button>
+    <button class="rb" data-ins="x^{ }"><div class="rb-preview" data-r="x^{n}"></div><span class="rb-label">Potencia</span></button>
+    <button class="rb" data-ins="\sqrt{ }"><div class="rb-preview" data-r="\sqrt{x}"></div><span class="rb-label">Raíz ²</span></button>
+    <button class="rb" data-ins="\sqrt[n]{ }"><div class="rb-preview" data-r="\sqrt[n]{x}"></div><span class="rb-label">Raíz n</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\log_{n}(  )"><div class="rb-preview" data-r="\log_n"></div><span class="rb-label">Log base n</span></button>
+    <button class="rb" data-ins="\ln\left(  \right)"><div class="rb-preview" data-r="\ln(x)"></div><span class="rb-label">Log Nat.</span></button>
+    <button class="rb" data-ins="\log\left(  \right)"><div class="rb-preview" data-r="\log_{10}"></div><span class="rb-label">Log₁₀</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="x_{ }"><div class="rb-preview" data-r="x_i"></div><span class="rb-label">Subíndice</span></button>
+    <button class="rb" data-ins="\left|  \right|"><div class="rb-preview" data-r="|x|"></div><span class="rb-label">Valor Abs.</span></button>
+    <button class="rb" data-ins="\left\|  \right\|"><div class="rb-preview" data-r="\|x\|"></div><span class="rb-label">Norma</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\infty"><div class="rb-preview" data-r="\infty"></div><span class="rb-label">Infinito</span></button>
+    <button class="rb" data-ins="\pm"><div class="rb-preview" data-r="\pm"></div><span class="rb-label">±</span></button>
+    <button class="rb" data-ins="\mp"><div class="rb-preview" data-r="\mp"></div><span class="rb-label">∓</span></button>
+    <button class="rb" data-ins="\cdot"><div class="rb-preview" data-r="\cdot"></div><span class="rb-label">Punto ·</span></button>
+    <button class="rb" data-ins="\times"><div class="rb-preview" data-r="\times"></div><span class="rb-label">Por ×</span></button>
+    <button class="rb" data-ins="\div"><div class="rb-preview" data-r="\div"></div><span class="rb-label">Dividir</span></button>
+    <button class="rb" data-ins="\neq"><div class="rb-preview" data-r="\neq"></div><span class="rb-label">≠</span></button>
+    <button class="rb" data-ins="\leq"><div class="rb-preview" data-r="\leq"></div><span class="rb-label">≤</span></button>
+    <button class="rb" data-ins="\geq"><div class="rb-preview" data-r="\geq"></div><span class="rb-label">≥</span></button>
+    <button class="rb" data-ins="\approx"><div class="rb-preview" data-r="\approx"></div><span class="rb-label">≈</span></button>
+    <button class="rb" data-ins="\equiv"><div class="rb-preview" data-r="\equiv"></div><span class="rb-label">≡</span></button>
+    <button class="rb" data-ins="\propto"><div class="rb-preview" data-r="\propto"></div><span class="rb-label">∝</span></button>
+  </div>
+
+  <!-- ═══ TAB 2: MATRICES & TENSORES ═══ -->
+  <div class="tab-panel" id="tab-matrices">
+    <!-- Fixed matrices -->
+    <button class="rb" data-ins="\begin{pmatrix} a & b \\ c & d \end{pmatrix}"><div class="rb-preview" data-r="\begin{pmatrix}a&b\\c&d\end{pmatrix}"></div><span class="rb-label">Mat. ( ) 2×2</span></button>
+    <button class="rb" data-ins="\begin{pmatrix} a & b & c \\ d & e & f \\ g & h & i \end{pmatrix}"><div class="rb-preview" data-r="\begin{pmatrix}a&b\\c&d\\e&f\end{pmatrix}"></div><span class="rb-label">Mat. ( ) 3×3</span></button>
+    <button class="rb" data-ins="\begin{bmatrix} a & b \\ c & d \end{bmatrix}"><div class="rb-preview" data-r="\begin{bmatrix}a&b\\c&d\end{bmatrix}"></div><span class="rb-label">Mat. [ ] 2×2</span></button>
+    <button class="rb" data-ins="\begin{vmatrix} a & b \\ c & d \end{vmatrix}"><div class="rb-preview" data-r="\begin{vmatrix}a&b\\c&d\end{vmatrix}"></div><span class="rb-label">Det. | | 2×2</span></button>
+    <button class="rb" data-ins="\begin{vmatrix} a & b & c \\ d & e & f \\ g & h & i \end{vmatrix}"><div class="rb-preview" data-r="\begin{vmatrix}a&b&c\\d&e&f\\g&h&i\end{vmatrix}"></div><span class="rb-label">Det. | | 3×3</span></button>
+    <button class="rb" data-ins="\begin{Vmatrix} a & b \\ c & d \end{Vmatrix}"><div class="rb-preview" data-r="\begin{Vmatrix}a&b\\c&d\end{Vmatrix}"></div><span class="rb-label">Mat. ‖ ‖</span></button>
+    <div class="rb-sep"></div>
+    <!-- n×m template -->
+    <button class="rb" data-ins="\begin{pmatrix} a_{11} & \cdots & a_{1n} \\ \vdots & \ddots & \vdots \\ a_{m1} & \cdots & a_{mn} \end{pmatrix}"><div class="rb-preview" data-r="\begin{pmatrix}a_{11}&\cdots&a_{1n}\\\vdots&\ddots&\vdots\\a_{m1}&\cdots&a_{mn}\end{pmatrix}"></div><span class="rb-label">Mat. n×m</span></button>
+    <button class="rb" data-ins="\begin{vmatrix} a_{11} & \cdots & a_{1n} \\ \vdots & \ddots & \vdots \\ a_{n1} & \cdots & a_{nn} \end{vmatrix}"><div class="rb-preview" data-r="\begin{vmatrix}a_{11}&\cdots&a_{1n}\\\vdots&\ddots&\vdots\\a_{n1}&\cdots&a_{nn}\end{vmatrix}"></div><span class="rb-label">Det. n×n</span></button>
+    <div class="rb-sep"></div>
+    <!-- Matrix builder (opens dialog) -->
+    <button class="rb rb-special" id="btn-matrix-builder"><div class="rb-preview" data-r="M_{m\times n}"></div><span class="rb-label">Constructor</span></button>
+    <button class="rb rb-special" id="btn-aug-builder"><div class="rb-preview" data-r="\left(\begin{array}{cc|c}a&b&c\\d&e&f\end{array}\right)"></div><span class="rb-label">Mat. Ampliada</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="A^{T}"><div class="rb-preview" data-r="A^{T}"></div><span class="rb-label">Transpuesta</span></button>
+    <button class="rb" data-ins="A^{-1}"><div class="rb-preview" data-r="A^{-1}"></div><span class="rb-label">Inversa</span></button>
+    <button class="rb" data-ins="\det\left( A \right)"><div class="rb-preview" data-r="\det(A)"></div><span class="rb-label">Det. func.</span></button>
+    <button class="rb" data-ins="\text{tr}\left( A \right)"><div class="rb-preview" data-r="\text{tr}(A)"></div><span class="rb-label">Traza</span></button>
+    <button class="rb" data-ins="\text{rank}\left( A \right)"><div class="rb-preview" data-r="\text{rank}(A)"></div><span class="rb-label">Rango</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\vec{v}"><div class="rb-preview" data-r="\vec{v}"></div><span class="rb-label">Vector</span></button>
+    <button class="rb" data-ins="\hat{u}"><div class="rb-preview" data-r="\hat{u}"></div><span class="rb-label">Unit. vec.</span></button>
+    <button class="rb" data-ins="\otimes"><div class="rb-preview" data-r="\otimes"></div><span class="rb-label">Prod. tens.</span></button>
+    <button class="rb" data-ins="\oplus"><div class="rb-preview" data-r="\oplus"></div><span class="rb-label">Suma dir.</span></button>
+  </div>
+
+  <!-- ═══ TAB 3: CÁLCULO MÁSTER ═══ -->
+  <div class="tab-panel" id="tab-calculo">
+    <button class="rb" data-ins="\int  \, dx"><div class="rb-preview" data-r="\int\!dx"></div><span class="rb-label">Integral</span></button>
+    <button class="rb" data-ins="\int_{a}^{b}  \, dx"><div class="rb-preview" data-r="\int_a^b\!dx"></div><span class="rb-label">Def. simple</span></button>
+    <button class="rb" data-ins="\iint_{D}  \, dA"><div class="rb-preview" data-r="\iint\!dA"></div><span class="rb-label">Int. doble</span></button>
+    <button class="rb" data-ins="\iiint_{V}  \, dV"><div class="rb-preview" data-r="\iiint\!dV"></div><span class="rb-label">Int. triple</span></button>
+    <button class="rb" data-ins="\oint_{C}  \, d\vec{r}"><div class="rb-preview" data-r="\oint\!d\vec{r}"></div><span class="rb-label">Int. línea</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\lim_{x \to } "><div class="rb-preview" data-r="\lim_{x\to a}"></div><span class="rb-label">Límite</span></button>
+    <button class="rb" data-ins="\lim_{x \to \infty} "><div class="rb-preview" data-r="\lim_{x\to\infty}"></div><span class="rb-label">Lím. ∞</span></button>
+    <button class="rb" data-ins="\lim_{x \to 0^{+}} "><div class="rb-preview" data-r="\lim_{x\to 0^+}"></div><span class="rb-label">Lím. lat.</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\frac{d}{dx}\left(  \right)"><div class="rb-preview" data-r="\frac{d}{dx}"></div><span class="rb-label">Derivada</span></button>
+    <button class="rb" data-ins="\frac{d^{n}}{dx^{n}}\left(  \right)"><div class="rb-preview" data-r="\frac{d^n}{dx^n}"></div><span class="rb-label">Der. n-ésima</span></button>
+    <button class="rb" data-ins="\frac{\partial }{\partial x}"><div class="rb-preview" data-r="\frac{\partial}{\partial x}"></div><span class="rb-label">Der. parcial</span></button>
+    <button class="rb" data-ins="\frac{\partial^{2} }{\partial x^{2}}"><div class="rb-preview" data-r="\frac{\partial^2}{\partial x^2}"></div><span class="rb-label">2ª parcial</span></button>
+    <button class="rb" data-ins="\frac{\partial^2 }{\partial x \partial y}"><div class="rb-preview" data-r="\frac{\partial^2}{\partial x\partial y}"></div><span class="rb-label">Parcial mixta</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\nabla "><div class="rb-preview" data-r="\nabla"></div><span class="rb-label">Gradiente</span></button>
+    <button class="rb" data-ins="\nabla^{2} "><div class="rb-preview" data-r="\nabla^2"></div><span class="rb-label">Laplaciano</span></button>
+    <button class="rb" data-ins="\nabla \cdot \vec{F}"><div class="rb-preview" data-r="\nabla\cdot\vec{F}"></div><span class="rb-label">Divergencia</span></button>
+    <button class="rb" data-ins="\nabla \times \vec{F}"><div class="rb-preview" data-r="\nabla\times\vec{F}"></div><span class="rb-label">Rotacional</span></button>
+  </div>
+
+  <!-- ═══ TAB 4: ESTADÍSTICA ═══ -->
+  <div class="tab-panel" id="tab-estadistica">
+    <button class="rb" data-ins="\sum_{i=1}^{n} "><div class="rb-preview" data-r="\sum_{i=1}^{n}"></div><span class="rb-label">Sumatoria</span></button>
+    <button class="rb" data-ins="\prod_{i=1}^{n} "><div class="rb-preview" data-r="\prod_{i=1}^{n}"></div><span class="rb-label">Productoria</span></button>
+    <button class="rb" data-ins="\binom{n}{k}"><div class="rb-preview" data-r="\binom{n}{k}"></div><span class="rb-label">Combinac.</span></button>
+    <button class="rb" data-ins="\binom{n}{k} p^k (1-p)^{n-k}"><div class="rb-preview" data-r="P(X{=}k)"></div><span class="rb-label">Bin. P(X=k)</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\bar{x}"><div class="rb-preview" data-r="\bar{x}"></div><span class="rb-label">Media x̄</span></button>
+    <button class="rb" data-ins="\bar{X}"><div class="rb-preview" data-r="\bar{X}"></div><span class="rb-label">Media X̄</span></button>
+    <button class="rb" data-ins="\sigma"><div class="rb-preview" data-r="\sigma"></div><span class="rb-label">Sigma σ</span></button>
+    <button class="rb" data-ins="\sigma^{2}"><div class="rb-preview" data-r="\sigma^2"></div><span class="rb-label">Varianza σ²</span></button>
+    <button class="rb" data-ins="\mu"><div class="rb-preview" data-r="\mu"></div><span class="rb-label">Media μ</span></button>
+    <button class="rb" data-ins="s^{2}"><div class="rb-preview" data-r="s^2"></div><span class="rb-label">Var. muestral</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="P\left( A \mid B \right)"><div class="rb-preview" data-r="P(A\mid B)"></div><span class="rb-label">P. condic.</span></button>
+    <button class="rb" data-ins="P\left( A \cup B \right)"><div class="rb-preview" data-r="P(A\cup B)"></div><span class="rb-label">P. unión</span></button>
+    <button class="rb" data-ins="P\left( A \cap B \right)"><div class="rb-preview" data-r="P(A\cap B)"></div><span class="rb-label">P. inter.</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\hat{p}"><div class="rb-preview" data-r="\hat{p}"></div><span class="rb-label">Prop. muest.</span></button>
+    <button class="rb" data-ins="z_{\alpha/2}"><div class="rb-preview" data-r="z_{\alpha/2}"></div><span class="rb-label">Z crítico</span></button>
+    <button class="rb" data-ins="\chi^{2}"><div class="rb-preview" data-r="\chi^2"></div><span class="rb-label">Chi cuad.</span></button>
+    <button class="rb" data-ins="\rho"><div class="rb-preview" data-r="\rho"></div><span class="rb-label">Correlac. ρ</span></button>
+    <button class="rb" data-ins="r^{2}"><div class="rb-preview" data-r="r^2"></div><span class="rb-label">R cuadrado</span></button>
+  </div>
+
+  <!-- ═══ TAB 5: LÓGICA & CONJUNTOS ═══ -->
+  <div class="tab-panel" id="tab-logica">
+    <button class="rb" data-ins="\forall\, "><div class="rb-preview" data-r="\forall"></div><span class="rb-label">Para todo</span></button>
+    <button class="rb" data-ins="\exists\, "><div class="rb-preview" data-r="\exists"></div><span class="rb-label">Existe</span></button>
+    <button class="rb" data-ins="\nexists\, "><div class="rb-preview" data-r="\nexists"></div><span class="rb-label">No existe</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\Rightarrow "><div class="rb-preview" data-r="\Rightarrow"></div><span class="rb-label">Implica ⟹</span></button>
+    <button class="rb" data-ins="\Leftrightarrow "><div class="rb-preview" data-r="\Leftrightarrow"></div><span class="rb-label">Sii ⟺</span></button>
+    <button class="rb" data-ins="\neg "><div class="rb-preview" data-r="\neg"></div><span class="rb-label">Negación</span></button>
+    <button class="rb" data-ins="\land "><div class="rb-preview" data-r="\land"></div><span class="rb-label">Y (and)</span></button>
+    <button class="rb" data-ins="\lor "><div class="rb-preview" data-r="\lor"></div><span class="rb-label">O (or)</span></button>
+    <button class="rb" data-ins="\oplus "><div class="rb-preview" data-r="\oplus"></div><span class="rb-label">XOR</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\cup "><div class="rb-preview" data-r="\cup"></div><span class="rb-label">Unión</span></button>
+    <button class="rb" data-ins="\cap "><div class="rb-preview" data-r="\cap"></div><span class="rb-label">Intersección</span></button>
+    <button class="rb" data-ins="\setminus "><div class="rb-preview" data-r="\setminus"></div><span class="rb-label">Diferencia</span></button>
+    <button class="rb" data-ins="\in "><div class="rb-preview" data-r="\in"></div><span class="rb-label">Pertenece</span></button>
+    <button class="rb" data-ins="\notin "><div class="rb-preview" data-r="\notin"></div><span class="rb-label">No pertenece</span></button>
+    <button class="rb" data-ins="\subseteq "><div class="rb-preview" data-r="\subseteq"></div><span class="rb-label">Subconj. ⊆</span></button>
+    <button class="rb" data-ins="\subset "><div class="rb-preview" data-r="\subset"></div><span class="rb-label">Sub. estric.</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\mathbb{R}"><div class="rb-preview" data-r="\mathbb{R}"></div><span class="rb-label">Reales ℝ</span></button>
+    <button class="rb" data-ins="\mathbb{N}"><div class="rb-preview" data-r="\mathbb{N}"></div><span class="rb-label">Naturales ℕ</span></button>
+    <button class="rb" data-ins="\mathbb{Z}"><div class="rb-preview" data-r="\mathbb{Z}"></div><span class="rb-label">Enteros ℤ</span></button>
+    <button class="rb" data-ins="\mathbb{Q}"><div class="rb-preview" data-r="\mathbb{Q}"></div><span class="rb-label">Racionales ℚ</span></button>
+    <button class="rb" data-ins="\mathbb{C}"><div class="rb-preview" data-r="\mathbb{C}"></div><span class="rb-label">Complejos ℂ</span></button>
+    <button class="rb" data-ins="\mathbb{P}"><div class="rb-preview" data-r="\mathbb{P}"></div><span class="rb-label">Primos ℙ</span></button>
+    <button class="rb" data-ins="\emptyset"><div class="rb-preview" data-r="\emptyset"></div><span class="rb-label">Vacío ∅</span></button>
+  </div>
+
+  <!-- ═══ TAB 6: CONSTANTES & VALORES ═══ -->
+  <div class="tab-panel" id="tab-constantes">
+    <!-- Constantes matemáticas -->
+    <button class="rb" data-ins="\pi"><div class="rb-preview" data-r="\pi"></div><span class="rb-label">Pi π</span></button>
+    <button class="rb" data-ins="\pi \approx 3.14159"><div class="rb-preview" data-r="\pi{\approx}3.14159"></div><span class="rb-label">π ≈ 3.14159</span></button>
+    <button class="rb" data-ins="e"><div class="rb-preview" data-r="e"></div><span class="rb-label">Euler e</span></button>
+    <button class="rb" data-ins="e \approx 2.71828"><div class="rb-preview" data-r="e{\approx}2.71828"></div><span class="rb-label">e ≈ 2.71828</span></button>
+    <button class="rb" data-ins="\varphi"><div class="rb-preview" data-r="\varphi"></div><span class="rb-label">Áureo φ</span></button>
+    <button class="rb" data-ins="\varphi = \frac{1+\sqrt{5}}{2} \approx 1.61803"><div class="rb-preview" data-r="\varphi=\frac{1+\sqrt{5}}{2}"></div><span class="rb-label">φ = (1+√5)/2</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\sqrt{2} \approx 1.41421"><div class="rb-preview" data-r="\sqrt{2}"></div><span class="rb-label">√2 ≈ 1.414</span></button>
+    <button class="rb" data-ins="\sqrt{3} \approx 1.73205"><div class="rb-preview" data-r="\sqrt{3}"></div><span class="rb-label">√3 ≈ 1.732</span></button>
+    <button class="rb" data-ins="\sqrt{5} \approx 2.23607"><div class="rb-preview" data-r="\sqrt{5}"></div><span class="rb-label">√5 ≈ 2.236</span></button>
+    <div class="rb-sep"></div>
+    <!-- Constantes físicas -->
+    <button class="rb" data-ins="c \approx 3 \times 10^{8} \, \text{m/s}"><div class="rb-preview" data-r="c=3{\times}10^8"></div><span class="rb-label">Vel. luz c</span></button>
+    <button class="rb" data-ins="g \approx 9.8 \, \text{m/s}^{2}"><div class="rb-preview" data-r="g{\approx}9.8"></div><span class="rb-label">Grav. g</span></button>
+    <button class="rb" data-ins="h \approx 6.626 \times 10^{-34} \, \text{J·s}"><div class="rb-preview" data-r="h=6.626{\times}10^{-34}"></div><span class="rb-label">Planck h</span></button>
+    <button class="rb" data-ins="k_B \approx 1.381 \times 10^{-23} \, \text{J/K}"><div class="rb-preview" data-r="k_B"></div><span class="rb-label">Boltzmann k</span></button>
+    <button class="rb" data-ins="N_A \approx 6.022 \times 10^{23} \, \text{mol}^{-1}"><div class="rb-preview" data-r="N_A"></div><span class="rb-label">Avogadro Nₐ</span></button>
+    <div class="rb-sep"></div>
+    <!-- Notación científica -->
+    <button class="rb" data-ins=" \times 10^{ }"><div class="rb-preview" data-r="{\times}10^n"></div><span class="rb-label">×10ⁿ</span></button>
+    <button class="rb" data-ins="n!"><div class="rb-preview" data-r="n!"></div><span class="rb-label">Factorial n!</span></button>
+    <button class="rb" data-ins="\Gamma\left( n \right)"><div class="rb-preview" data-r="\Gamma(n)"></div><span class="rb-label">Gamma Γ</span></button>
+    <button class="rb" data-ins="i"><div class="rb-preview" data-r="i=\sqrt{-1}"></div><span class="rb-label">Imag. i</span></button>
+    <button class="rb" data-ins="a + bi"><div class="rb-preview" data-r="a+bi"></div><span class="rb-label">Complejo</span></button>
+    <button class="rb" data-ins="\|z\| = \sqrt{a^2 + b^2}"><div class="rb-preview" data-r="\|z\|"></div><span class="rb-label">Módulo |z|</span></button>
+  </div>
+
+  <!-- ═══ TAB 7: LETRAS GRIEGAS ═══ -->
+  <div class="tab-panel" id="tab-griegas">
+    <!-- Minúsculas -->
+    <button class="rb sm" data-ins="\alpha"><div class="rb-preview" data-r="\alpha"></div><span class="rb-label">α alpha</span></button>
+    <button class="rb sm" data-ins="\beta"><div class="rb-preview" data-r="\beta"></div><span class="rb-label">β beta</span></button>
+    <button class="rb sm" data-ins="\gamma"><div class="rb-preview" data-r="\gamma"></div><span class="rb-label">γ gamma</span></button>
+    <button class="rb sm" data-ins="\delta"><div class="rb-preview" data-r="\delta"></div><span class="rb-label">δ delta</span></button>
+    <button class="rb sm" data-ins="\epsilon"><div class="rb-preview" data-r="\epsilon"></div><span class="rb-label">ε epsilon</span></button>
+    <button class="rb sm" data-ins="\varepsilon"><div class="rb-preview" data-r="\varepsilon"></div><span class="rb-label">ε var.</span></button>
+    <button class="rb sm" data-ins="\zeta"><div class="rb-preview" data-r="\zeta"></div><span class="rb-label">ζ zeta</span></button>
+    <button class="rb sm" data-ins="\eta"><div class="rb-preview" data-r="\eta"></div><span class="rb-label">η eta</span></button>
+    <button class="rb sm" data-ins="\theta"><div class="rb-preview" data-r="\theta"></div><span class="rb-label">θ theta</span></button>
+    <button class="rb sm" data-ins="\vartheta"><div class="rb-preview" data-r="\vartheta"></div><span class="rb-label">ϑ var.</span></button>
+    <button class="rb sm" data-ins="\iota"><div class="rb-preview" data-r="\iota"></div><span class="rb-label">ι iota</span></button>
+    <button class="rb sm" data-ins="\kappa"><div class="rb-preview" data-r="\kappa"></div><span class="rb-label">κ kappa</span></button>
+    <button class="rb sm" data-ins="\lambda"><div class="rb-preview" data-r="\lambda"></div><span class="rb-label">λ lambda</span></button>
+    <button class="rb sm" data-ins="\mu"><div class="rb-preview" data-r="\mu"></div><span class="rb-label">μ mu</span></button>
+    <button class="rb sm" data-ins="\nu"><div class="rb-preview" data-r="\nu"></div><span class="rb-label">ν nu</span></button>
+    <button class="rb sm" data-ins="\xi"><div class="rb-preview" data-r="\xi"></div><span class="rb-label">ξ xi</span></button>
+    <button class="rb sm" data-ins="\pi"><div class="rb-preview" data-r="\pi"></div><span class="rb-label">π pi</span></button>
+    <button class="rb sm" data-ins="\varpi"><div class="rb-preview" data-r="\varpi"></div><span class="rb-label">ϖ var.</span></button>
+    <button class="rb sm" data-ins="\rho"><div class="rb-preview" data-r="\rho"></div><span class="rb-label">ρ rho</span></button>
+    <button class="rb sm" data-ins="\varrho"><div class="rb-preview" data-r="\varrho"></div><span class="rb-label">ϱ var.</span></button>
+    <button class="rb sm" data-ins="\sigma"><div class="rb-preview" data-r="\sigma"></div><span class="rb-label">σ sigma</span></button>
+    <button class="rb sm" data-ins="\varsigma"><div class="rb-preview" data-r="\varsigma"></div><span class="rb-label">ς var.</span></button>
+    <button class="rb sm" data-ins="\tau"><div class="rb-preview" data-r="\tau"></div><span class="rb-label">τ tau</span></button>
+    <button class="rb sm" data-ins="\upsilon"><div class="rb-preview" data-r="\upsilon"></div><span class="rb-label">υ upsilon</span></button>
+    <button class="rb sm" data-ins="\phi"><div class="rb-preview" data-r="\phi"></div><span class="rb-label">ϕ phi</span></button>
+    <button class="rb sm" data-ins="\varphi"><div class="rb-preview" data-r="\varphi"></div><span class="rb-label">φ var.</span></button>
+    <button class="rb sm" data-ins="\chi"><div class="rb-preview" data-r="\chi"></div><span class="rb-label">χ chi</span></button>
+    <button class="rb sm" data-ins="\psi"><div class="rb-preview" data-r="\psi"></div><span class="rb-label">ψ psi</span></button>
+    <button class="rb sm" data-ins="\omega"><div class="rb-preview" data-r="\omega"></div><span class="rb-label">ω omega</span></button>
+    <div class="rb-sep"></div>
+    <!-- Mayúsculas -->
+    <button class="rb sm" data-ins="\Gamma"><div class="rb-preview" data-r="\Gamma"></div><span class="rb-label">Γ Gamma</span></button>
+    <button class="rb sm" data-ins="\Delta"><div class="rb-preview" data-r="\Delta"></div><span class="rb-label">Δ Delta</span></button>
+    <button class="rb sm" data-ins="\Theta"><div class="rb-preview" data-r="\Theta"></div><span class="rb-label">Θ Theta</span></button>
+    <button class="rb sm" data-ins="\Lambda"><div class="rb-preview" data-r="\Lambda"></div><span class="rb-label">Λ Lambda</span></button>
+    <button class="rb sm" data-ins="\Xi"><div class="rb-preview" data-r="\Xi"></div><span class="rb-label">Ξ Xi</span></button>
+    <button class="rb sm" data-ins="\Pi"><div class="rb-preview" data-r="\Pi"></div><span class="rb-label">Π Pi</span></button>
+    <button class="rb sm" data-ins="\Sigma"><div class="rb-preview" data-r="\Sigma"></div><span class="rb-label">Σ Sigma</span></button>
+    <button class="rb sm" data-ins="\Upsilon"><div class="rb-preview" data-r="\Upsilon"></div><span class="rb-label">Υ Upsilon</span></button>
+    <button class="rb sm" data-ins="\Phi"><div class="rb-preview" data-r="\Phi"></div><span class="rb-label">Φ Phi</span></button>
+    <button class="rb sm" data-ins="\Psi"><div class="rb-preview" data-r="\Psi"></div><span class="rb-label">Ψ Psi</span></button>
+    <button class="rb sm" data-ins="\Omega"><div class="rb-preview" data-r="\Omega"></div><span class="rb-label">Ω Omega</span></button>
+  </div>
+
+  <!-- ═══ TAB 8: AGRUPACIÓN & CASOS ═══ -->
+  <div class="tab-panel" id="tab-agrupacion">
+    <!-- Agrupadores simples -->
+    <button class="rb" data-ins="\left(  \right)"><div class="rb-preview" data-r="(\cdot)"></div><span class="rb-label">( )</span></button>
+    <button class="rb" data-ins="\left[  \right]"><div class="rb-preview" data-r="[\cdot]"></div><span class="rb-label">[ ]</span></button>
+    <button class="rb" data-ins="\left\{  \right\}"><div class="rb-preview" data-r="\{\cdot\}"></div><span class="rb-label">{ }</span></button>
+    <button class="rb" data-ins="\left\langle  \right\rangle"><div class="rb-preview" data-r="\langle\cdot\rangle"></div><span class="rb-label">⟨ ⟩</span></button>
+    <button class="rb" data-ins="\left\lfloor  \right\rfloor"><div class="rb-preview" data-r="\lfloor x\rfloor"></div><span class="rb-label">⌊ ⌋ Piso</span></button>
+    <button class="rb" data-ins="\left\lceil  \right\rceil"><div class="rb-preview" data-r="\lceil x\rceil"></div><span class="rb-label">⌈ ⌉ Techo</span></button>
+    <div class="rb-sep"></div>
+    <!-- Sistemas de ecuaciones / casos con llave izquierda -->
+    <button class="rb" data-ins="\begin{cases}  &  \\ & \end{cases}"><div class="rb-preview" data-r="\begin{cases}f_1\\f_2\end{cases}"></div><span class="rb-label">Casos 2 filas</span></button>
+    <button class="rb" data-ins="\begin{cases}  & \\ & \\ & \end{cases}"><div class="rb-preview" data-r="\begin{cases}f_1\\f_2\\f_3\end{cases}"></div><span class="rb-label">Casos 3 filas</span></button>
+    <button class="rb" data-ins="\left\{ \begin{array}{l}  \\ \\ \end{array} \right."><div class="rb-preview" data-r="\left\{\begin{array}{l}f_1\\f_2\end{array}\right."></div><span class="rb-label">{ llave izq.</span></button>
+    <div class="rb-sep"></div>
+    <!-- Sistemas de ecuaciones lineales -->
+    <button class="rb" data-ins="\begin{array}{rcl}  &=& \\ &=& \end{array}"><div class="rb-preview" data-r="\begin{array}{rcl}a&=&b\\c&=&d\end{array}"></div><span class="rb-label">Sist. 2 Ec.</span></button>
+    <button class="rb" data-ins="\begin{array}{rcl}  &=& \\ &=& \\ &=& \end{array}"><div class="rb-preview" data-r="\begin{array}{rcl}a&=&b\\c&=&d\\e&=&f\end{array}"></div><span class="rb-label">Sist. 3 Ec.</span></button>
+    <div class="rb-sep"></div>
+    <!-- ALINEACIÓN DE ECUACIONES -->
+    <button class="rb" data-ins="\begin{align*}  &=  \\ &= \end{align*}"><div class="rb-preview" data-r="\begin{aligned}a&=b\\&=c\end{aligned}"></div><span class="rb-label">Align 2</span></button>
+    <button class="rb" data-ins="\begin{align*}  &=  \\ &=  \\ &= \end{align*}"><div class="rb-preview" data-r="\begin{aligned}a&=b\\&=c\\&=d\end{aligned}"></div><span class="rb-label">Align 3</span></button>
+    <div class="rb-sep"></div>
+    <!-- Columna augmented matrix (left bar) -->
+    <button class="rb" data-ins="\left( \begin{array}{cc|c} a & b & c \\ d & e & f \end{array} \right)"><div class="rb-preview" data-r="\left(\begin{array}{cc|c}a&b&c\\d&e&f\end{array}\right)"></div><span class="rb-label">Amp. 2×2|1</span></button>
+    <button class="rb" data-ins="\left( \begin{array}{ccc|c} a & b & c & d \\ e & f & g & h \\ i & j & k & l \end{array} \right)"><div class="rb-preview" data-r="\left(\begin{array}{ccc|c}a&b&c&d\\e&f&g&h\\i&j&k&l\end{array}\right)"></div><span class="rb-label">Amp. 3×3|1</span></button>
+    <button class="rb" data-ins="\left( \begin{array}{cc|cc} a & b & c & d \\ e & f & g & h \end{array} \right)"><div class="rb-preview" data-r="\left(\begin{array}{cc|cc}a&b&c&d\\e&f&g&h\end{array}\right)"></div><span class="rb-label">Amp. 2|2</span></button>
+    <button class="rb rb-special" id="btn-aug-builder2"><div class="rb-preview" data-r="\left(\begin{array}{ccc|c}\cdots\end{array}\right)"></div><span class="rb-label">Amp. n×m|k</span></button>
+  </div>
+</div>
+
+<!-- ══ MATRIX BUILDER MODAL ══ -->
+<div class="modal-bg" id="modal-matrix">
+  <div class="modal">
+    <h2>◈ CONSTRUCTOR DE MATRIZ n×m</h2>
+    <div class="modal-row">
+      <label>Tipo</label>
+      <select id="mb-type">
+        <option value="pmatrix">( ) pmatrix</option>
+        <option value="bmatrix">[ ] bmatrix</option>
+        <option value="vmatrix">| | vmatrix</option>
+        <option value="Vmatrix">‖ ‖ Vmatrix</option>
+        <option value="Bmatrix">{ } Bmatrix</option>
+      </select>
+    </div>
+    <div class="modal-row">
+      <label>Filas (m)</label>
+      <input type="number" id="mb-rows" min="1" max="8" value="3">
+      <label style="min-width:60px">Cols (n)</label>
+      <input type="number" id="mb-cols" min="1" max="8" value="3">
+    </div>
+    <div id="matrix-cells"></div>
+    <div class="modal-preview" id="mb-preview"></div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-cancel" id="mb-cancel">Cancelar</button>
+      <button class="modal-btn modal-btn-ok" id="mb-insert">⊕ Insertar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ AUGMENTED MATRIX BUILDER MODAL ══ -->
+<div class="modal-bg" id="modal-aug">
+  <div class="modal">
+    <h2>◈ MATRIZ AMPLIADA n×m | k</h2>
+    <div class="modal-row">
+      <label>Filas (n)</label>
+      <input type="number" id="ab-rows" min="1" max="8" value="2">
+      <label style="min-width:60px">Cols coef. (m)</label>
+      <input type="number" id="ab-cols" min="1" max="8" value="2">
+    </div>
+    <div class="modal-row">
+      <label>Cols amp. (k)</label>
+      <input type="number" id="ab-aug" min="1" max="4" value="1">
+      <label style="min-width:60px">Delimitador</label>
+      <select id="ab-delim">
+        <option value="p">( ) paréntesis</option>
+        <option value="b">[ ] corchetes</option>
+        <option value="v">| | barras</option>
+      </select>
+    </div>
+    <div id="aug-cells"></div>
+    <div class="modal-preview" id="ab-preview"></div>
+    <div class="modal-btns">
+      <button class="modal-btn modal-btn-cancel" id="ab-cancel">Cancelar</button>
+      <button class="modal-btn modal-btn-ok" id="ab-insert">⊕ Insertar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WORKSPACE ══ -->
+<div id="workspace">
+  <div id="render-wrap">
+    <div class="render-label">▶ VISTA MATEMÁTICA EN TIEMPO REAL</div>
+    <div id="katex-display"><span class="katex-placeholder">Escribe una expresión o usa los botones del ribbon…</span></div>
+  </div>
+  <div id="bottom-row">
+    <div id="latex-wrap">
+      <span class="latex-label">LaTeX SOURCE</span>
+      <textarea id="latex-input" spellcheck="false" placeholder="Escribe LaTeX directamente aquí, o usa los botones arriba…"></textarea>
+    </div>
+    <div id="actions">
+      <button class="action-btn" id="btn-copy">⎘ Copiar LaTeX</button>
+      <button class="action-btn" id="btn-clear">✕ Limpiar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <span>MathFlow Pro Master Edition</span> — Lic. MF Yesid Huertas Gordillo Esp CPD &nbsp;|&nbsp;
+  Motor: <span>KaTeX 0.16.9</span> &nbsp;|&nbsp; v4.0 Pro
+</footer>
+
+<!-- ══ JAVASCRIPT ══ -->
+<script>
+$(function() {
+
+  var KATEX_OPTS = { throwOnError:false, displayMode:false, trust:true, strict:false };
+  var KATEX_DISP = { throwOnError:false, displayMode:true,  trust:true, strict:false };
+
+  // ── 1. Render button previews ──────────────────────────────────
+  document.querySelectorAll('.rb-preview[data-r]').forEach(function(el){
+    try { katex.render(el.getAttribute('data-r'), el, KATEX_OPTS); }
+    catch(e){ el.textContent = el.getAttribute('data-r'); }
+  });
+
+  // ── 2. Main render ─────────────────────────────────────────────
+  var inp  = document.getElementById('latex-input');
+  var disp = document.getElementById('katex-display');
+  var wrap = document.getElementById('render-wrap');
+
+  function renderMain(){
+    var tex = inp.value.trim();
+    if(!tex){ disp.innerHTML='<span class="katex-placeholder">Escribe una expresión o usa los botones del ribbon…</span>'; return; }
+    try{ katex.render(tex, disp, KATEX_DISP); }
+    catch(e){ disp.innerHTML='<span style="color:#ff6b6b;font-size:.85em">⚠ '+e.message+'</span>'; }
+  }
+  inp.addEventListener('input', renderMain);
+  inp.addEventListener('focus', function(){ wrap.classList.add('focused'); });
+  inp.addEventListener('blur',  function(){ wrap.classList.remove('focused'); });
+
+  // ── 3. Insert at cursor ────────────────────────────────────────
+  function insertAt(text){
+    var s=inp.selectionStart, e=inp.selectionEnd, v=inp.value;
+    inp.value = v.substring(0,s)+text+v.substring(e);
+    inp.setSelectionRange(s+text.length, s+text.length);
+    inp.focus(); renderMain();
+  }
+
+  document.querySelectorAll('.rb[data-ins]').forEach(function(btn){
+    btn.addEventListener('click', function(ev){
+      ev.stopPropagation();
+      insertAt(this.getAttribute('data-ins'));
+    });
+  });
+
+  // ── 4. Tabs ────────────────────────────────────────────────────
+  document.querySelectorAll('.tab-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+      this.classList.add('active');
+      document.getElementById('tab-'+this.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ── 5. Copy / Clear ───────────────────────────────────────────
+  document.getElementById('btn-copy').addEventListener('click', function(){
+    var tex=inp.value; if(!tex) return;
+    var btn=this;
+    function done(){ btn.textContent='✓ ¡Copiado!'; btn.classList.add('copied'); setTimeout(function(){ btn.textContent='⎘ Copiar LaTeX'; btn.classList.remove('copied'); },2000); }
+    function fb(){ var t=document.createElement('textarea'); t.value=tex; document.body.appendChild(t); t.select(); document.execCommand('copy'); document.body.removeChild(t); done(); }
+    if(navigator.clipboard) navigator.clipboard.writeText(tex).then(done).catch(fb); else fb();
+  });
+  document.getElementById('btn-clear').addEventListener('click', function(){
+    if(confirm('¿Limpiar el lienzo?')){ inp.value=''; renderMain(); inp.focus(); }
+  });
+
+  // ══════════════════════════════════════════════════════════════
+  // ── MATRIX BUILDER MODAL ─────────────────────────────────────
+  // ══════════════════════════════════════════════════════════════
+
+  function buildCellTable(containerId, rows, cols, augCols){
+    var c = document.getElementById(containerId);
+    c.innerHTML = '';
+    var tbl = document.createElement('table');
+    for(var r=0; r<rows; r++){
+      var tr = document.createElement('tr');
+      var totalCols = augCols !== undefined ? cols + augCols : cols;
+      for(var col=0; col<totalCols; col++){
+        var td = document.createElement('td');
+        if(augCols !== undefined && col === cols){ td.classList.add('aug-sep'); }
+        var inp2 = document.createElement('input');
+        inp2.type='text'; inp2.placeholder = augCols!==undefined && col>=cols ? 'b_{'+(r+1)+'}' : (String.fromCharCode(97+col))+'_{'+(r+1)+'}';
+        inp2.dataset.row=r; inp2.dataset.col=col;
+        inp2.addEventListener('input', augCols!==undefined ? updateAugPreview : updateMatrixPreview);
+        td.appendChild(inp2); tr.appendChild(td);
+      }
+      tbl.appendChild(tr);
+    }
+    c.appendChild(tbl);
+  }
+
+  function getCellValues(containerId, rows, totalCols){
+    var grid = [];
+    for(var r=0; r<rows; r++){
+      grid[r] = [];
+      for(var c=0; c<totalCols; c++){
+        var el = document.querySelector('#'+containerId+' input[data-row="'+r+'"][data-col="'+c+'"]');
+        grid[r][c] = el && el.value.trim() ? el.value.trim() : (el ? el.placeholder : '\\cdot');
+      }
+    }
+    return grid;
+  }
+
+  // ─ Matrix builder ─
+  var mbModal = document.getElementById('modal-matrix');
+
+  function openMatrixModal(){
+    buildCellTable('matrix-cells', parseInt(document.getElementById('mb-rows').value)||3, parseInt(document.getElementById('mb-cols').value)||3);
+    updateMatrixPreview();
+    mbModal.classList.add('open');
+  }
+
+  function updateMatrixPreview(){
+    var rows=parseInt(document.getElementById('mb-rows').value)||1;
+    var cols=parseInt(document.getElementById('mb-cols').value)||1;
+    var type=document.getElementById('mb-type').value;
+    var grid=getCellValues('matrix-cells', rows, cols);
+    var tex = buildMatrixLatex(type, grid, rows, cols);
+    try{ katex.render(tex, document.getElementById('mb-preview'), KATEX_DISP); }
+    catch(e){ document.getElementById('mb-preview').textContent=tex; }
+  }
+
+  function buildMatrixLatex(type, grid, rows, cols){
+    var rows2=[];
+    for(var r=0;r<rows;r++){ rows2.push(grid[r].join(' & ')); }
+    return '\\begin{'+type+'}'+rows2.join(' \\\\ ')+'\\end{'+type+'}';
+  }
+
+  document.getElementById('mb-rows').addEventListener('input', function(){
+    buildCellTable('matrix-cells', parseInt(this.value)||1, parseInt(document.getElementById('mb-cols').value)||1);
+    updateMatrixPreview();
+  });
+  document.getElementById('mb-cols').addEventListener('input', function(){
+    buildCellTable('matrix-cells', parseInt(document.getElementById('mb-rows').value)||1, parseInt(this.value)||1);
+    updateMatrixPreview();
+  });
+  document.getElementById('mb-type').addEventListener('change', updateMatrixPreview);
+
+  document.getElementById('btn-matrix-builder').addEventListener('click', openMatrixModal);
+  document.getElementById('mb-cancel').addEventListener('click', function(){ mbModal.classList.remove('open'); });
+  document.getElementById('mb-insert').addEventListener('click', function(){
+    var rows=parseInt(document.getElementById('mb-rows').value)||1;
+    var cols=parseInt(document.getElementById('mb-cols').value)||1;
+    var type=document.getElementById('mb-type').value;
+    var grid=getCellValues('matrix-cells', rows, cols);
+    insertAt(buildMatrixLatex(type, grid, rows, cols));
+    mbModal.classList.remove('open');
+  });
+  mbModal.addEventListener('click', function(e){ if(e.target===this) this.classList.remove('open'); });
+
+  // ─ Augmented matrix builder ─
+  var abModal = document.getElementById('modal-aug');
+
+  function openAugModal(){
+    var rows=parseInt(document.getElementById('ab-rows').value)||2;
+    var cols=parseInt(document.getElementById('ab-cols').value)||2;
+    var aug=parseInt(document.getElementById('ab-aug').value)||1;
+    buildCellTable('aug-cells', rows, cols, aug);
+    updateAugPreview();
+    abModal.classList.add('open');
+  }
+
+  function updateAugPreview(){
+    var rows=parseInt(document.getElementById('ab-rows').value)||1;
+    var cols=parseInt(document.getElementById('ab-cols').value)||1;
+    var aug=parseInt(document.getElementById('ab-aug').value)||1;
+    var delim=document.getElementById('ab-delim').value;
+    var grid=getCellValues('aug-cells', rows, cols+aug);
+    var tex=buildAugLatex(delim, grid, rows, cols, aug);
+    try{ katex.render(tex, document.getElementById('ab-preview'), KATEX_DISP); }
+    catch(e){ document.getElementById('ab-preview').textContent=tex; }
+  }
+
+  function buildAugLatex(delim, grid, rows, cols, aug){
+    // Build column spec: e.g. ccc|c
+    var spec = '';
+    for(var i=0;i<cols;i++) spec+='c';
+    spec+='|';
+    for(var j=0;j<aug;j++) spec+='c';
+    var rowStrs=[];
+    for(var r=0;r<rows;r++){ rowStrs.push(grid[r].join(' & ')); }
+    var inner = '\\begin{array}{'+spec+'}'+rowStrs.join(' \\\\ ')+'\\end{array}';
+    if(delim==='p') return '\\left( '+inner+' \\right)';
+    if(delim==='b') return '\\left[ '+inner+' \\right]';
+    return '\\left| '+inner+' \\right|';
+  }
+
+  ['ab-rows','ab-cols','ab-aug'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', function(){
+      var rows=parseInt(document.getElementById('ab-rows').value)||1;
+      var cols=parseInt(document.getElementById('ab-cols').value)||1;
+      var aug=parseInt(document.getElementById('ab-aug').value)||1;
+      buildCellTable('aug-cells', rows, cols, aug);
+      updateAugPreview();
+    });
+  });
+  document.getElementById('ab-delim').addEventListener('change', updateAugPreview);
+
+  // Both augmented buttons open same modal
+  document.getElementById('btn-aug-builder').addEventListener('click', openAugModal);
+  document.getElementById('btn-aug-builder2').addEventListener('click', openAugModal);
+  document.getElementById('ab-cancel').addEventListener('click', function(){ abModal.classList.remove('open'); });
+  document.getElementById('ab-insert').addEventListener('click', function(){
+    var rows=parseInt(document.getElementById('ab-rows').value)||1;
+    var cols=parseInt(document.getElementById('ab-cols').value)||1;
+    var aug=parseInt(document.getElementById('ab-aug').value)||1;
+    var delim=document.getElementById('ab-delim').value;
+    var grid=getCellValues('aug-cells', rows, cols+aug);
+    insertAt(buildAugLatex(delim, grid, rows, cols, aug));
+    abModal.classList.remove('open');
+  });
+  abModal.addEventListener('click', function(e){ if(e.target===this) this.classList.remove('open'); });
+
+  inp.focus();
+});
+</script>
+</body>
+</html>
