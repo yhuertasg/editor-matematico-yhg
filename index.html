@@ -39,12 +39,15 @@ header::before{content:'';position:absolute;inset:0;background:repeating-linear-
 .tab-panel.active{display:flex;flex-wrap:wrap;gap:5px;align-items:flex-start;}
 
 /* ── RIBBON BUTTONS ── */
-.rb{display:flex;flex-direction:column;align-items:center;background:linear-gradient(180deg,var(--navy-m) 0%,#0f2840 100%);border:1px solid var(--border);border-radius:7px;padding:5px 6px 4px;cursor:pointer;min-width:58px;gap:2px;transition:all .18s;user-select:none;}
+.rb{display:flex;flex-direction:column;align-items:center;background:linear-gradient(180deg,var(--navy-m) 0%,#0f2840 100%);border:1px solid var(--border);border-radius:7px;padding:5px 7px 5px;cursor:pointer;min-width:64px;gap:3px;transition:all .18s;user-select:none;}
 .rb:hover{border-color:var(--cyan);box-shadow:0 0 11px rgba(0,180,216,.35);transform:translateY(-2px);}
 .rb:active{transform:translateY(0);}
-.rb-preview{min-height:28px;max-height:34px;overflow:hidden;display:flex;align-items:center;justify-content:center;width:100%;}
-.rb-preview .katex{font-size:1.05em !important;}
+.rb-preview{min-height:34px;overflow:visible;display:flex;align-items:center;justify-content:center;width:100%;}
+.rb-preview .katex{font-size:1.2em !important;}
 .rb-preview .katex,.rb-preview .katex *{color:var(--cyan-g) !important;}
+/* Matrix text-icon previews */
+.rb-preview.mat{display:flex;align-items:center;justify-content:center;}
+.rb-preview.mat svg{width:auto;height:34px;}
 .rb-label{font-size:9px;font-weight:600;color:var(--text-d);letter-spacing:.3px;text-transform:uppercase;text-align:center;line-height:1.2;}
 .rb-sep{width:1px;background:var(--border);margin:4px 2px;align-self:stretch;}
 
@@ -136,6 +139,7 @@ footer span{color:var(--cyan);}
     <button class="tab-btn" data-tab="constantes">Constantes &amp; Valores</button>
     <button class="tab-btn" data-tab="griegas">Letras Griegas</button>
     <button class="tab-btn" data-tab="agrupacion">Agrupación &amp; Casos</button>
+    <button class="tab-btn" data-tab="subsuper">Sub &amp; Superínd.</button>
   </div>
 
   <!-- ═══ TAB 1: ESTRUCTURAS ═══ -->
@@ -169,21 +173,39 @@ footer span{color:var(--cyan);}
 
   <!-- ═══ TAB 2: MATRICES & TENSORES ═══ -->
   <div class="tab-panel" id="tab-matrices">
-    <!-- Fixed matrices -->
-    <button class="rb" data-ins="\begin{pmatrix} a & b \\ c & d \end{pmatrix}"><div class="rb-preview" data-r="\begin{pmatrix}a&b\\c&d\end{pmatrix}"></div><span class="rb-label">Mat. ( ) 2×2</span></button>
-    <button class="rb" data-ins="\begin{pmatrix} a & b & c \\ d & e & f \\ g & h & i \end{pmatrix}"><div class="rb-preview" data-r="\begin{pmatrix}a&b\\c&d\\e&f\end{pmatrix}"></div><span class="rb-label">Mat. ( ) 3×3</span></button>
-    <button class="rb" data-ins="\begin{bmatrix} a & b \\ c & d \end{bmatrix}"><div class="rb-preview" data-r="\begin{bmatrix}a&b\\c&d\end{bmatrix}"></div><span class="rb-label">Mat. [ ] 2×2</span></button>
-    <button class="rb" data-ins="\begin{vmatrix} a & b \\ c & d \end{vmatrix}"><div class="rb-preview" data-r="\begin{vmatrix}a&b\\c&d\end{vmatrix}"></div><span class="rb-label">Det. | | 2×2</span></button>
-    <button class="rb" data-ins="\begin{vmatrix} a & b & c \\ d & e & f \\ g & h & i \end{vmatrix}"><div class="rb-preview" data-r="\begin{vmatrix}a&b&c\\d&e&f\\g&h&i\end{vmatrix}"></div><span class="rb-label">Det. | | 3×3</span></button>
-    <button class="rb" data-ins="\begin{Vmatrix} a & b \\ c & d \end{Vmatrix}"><div class="rb-preview" data-r="\begin{Vmatrix}a&b\\c&d\end{Vmatrix}"></div><span class="rb-label">Mat. ‖ ‖</span></button>
+    <button class="rb" data-ins="\begin{pmatrix} a & b \\ c & d \end{pmatrix}">
+      <div class="rb-preview mat"><svg viewBox="0 0 54 34" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:54px"><path d="M9,4 Q5,9 5,17 Q5,25 9,30" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M45,4 Q49,9 49,17 Q49,25 45,30" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="round"/><text x="19" y="13" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">a</text><text x="35" y="13" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">b</text><text x="19" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">c</text><text x="35" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">d</text></svg></div><span class="rb-label">Mat.( ) 2×2</span>
+    </button>
+    <button class="rb" data-ins="\begin{pmatrix} a & b & c \\ d & e & f \\ g & h & i \end{pmatrix}">
+      <div class="rb-preview mat"><svg viewBox="0 0 66 34" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:66px"><path d="M9,3 Q5,8 5,17 Q5,26 9,31" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M57,3 Q61,8 61,17 Q61,26 57,31" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="round"/><text x="20" y="11" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">a</text><text x="33" y="11" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">b</text><text x="46" y="11" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">c</text><text x="20" y="19" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">d</text><text x="33" y="19" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">e</text><text x="46" y="19" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">f</text><text x="20" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">g</text><text x="33" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">h</text><text x="46" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">i</text></svg></div><span class="rb-label">Mat.( ) 3×3</span>
+    </button>
+    <button class="rb" data-ins="\begin{bmatrix} a & b \\ c & d \end{bmatrix}">
+      <div class="rb-preview mat"><svg viewBox="0 0 54 34" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:54px"><path d="M9,4 L6,4 L6,30 L9,30" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="square"/><path d="M45,4 L48,4 L48,30 L45,30" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="square"/><text x="21" y="14" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">a</text><text x="34" y="14" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">b</text><text x="21" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">c</text><text x="34" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">d</text></svg></div><span class="rb-label">Mat.[ ] 2×2</span>
+    </button>
+    <button class="rb" data-ins="\begin{bmatrix} a & b & c \\ d & e & f \\ g & h & i \end{bmatrix}">
+      <div class="rb-preview mat"><svg viewBox="0 0 66 34" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:66px"><path d="M9,3 L6,3 L6,31 L9,31" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="square"/><path d="M57,3 L60,3 L60,31 L57,31" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="square"/><text x="20" y="11" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">a</text><text x="33" y="11" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">b</text><text x="46" y="11" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">c</text><text x="20" y="19" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">d</text><text x="33" y="19" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">e</text><text x="46" y="19" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">f</text><text x="20" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">g</text><text x="33" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">h</text><text x="46" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">i</text></svg></div><span class="rb-label">Mat.[ ] 3×3</span>
+    </button>
+    <button class="rb" data-ins="\begin{vmatrix} a & b \\ c & d \end{vmatrix}">
+      <div class="rb-preview mat"><svg viewBox="0 0 54 34" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:54px"><line x1="7" y1="4" x2="7" y2="30" stroke="#00e5ff" stroke-width="1.8"/><line x1="47" y1="4" x2="47" y2="30" stroke="#00e5ff" stroke-width="1.8"/><text x="21" y="14" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">a</text><text x="34" y="14" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">b</text><text x="21" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">c</text><text x="34" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">d</text></svg></div><span class="rb-label">Det.| | 2×2</span>
+    </button>
+    <button class="rb" data-ins="\begin{vmatrix} a & b & c \\ d & e & f \\ g & h & i \end{vmatrix}">
+      <div class="rb-preview mat"><svg viewBox="0 0 66 34" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:66px"><line x1="7" y1="3" x2="7" y2="31" stroke="#00e5ff" stroke-width="1.8"/><line x1="59" y1="3" x2="59" y2="31" stroke="#00e5ff" stroke-width="1.8"/><text x="20" y="11" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">a</text><text x="33" y="11" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">b</text><text x="46" y="11" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">c</text><text x="20" y="19" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">d</text><text x="33" y="19" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">e</text><text x="46" y="19" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">f</text><text x="20" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">g</text><text x="33" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">h</text><text x="46" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">i</text></svg></div><span class="rb-label">Det.| | 3×3</span>
+    </button>
+    <button class="rb" data-ins="\begin{Vmatrix} a & b \\ c & d \end{Vmatrix}">
+      <div class="rb-preview mat"><svg viewBox="0 0 54 34" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:54px"><line x1="5" y1="4" x2="5" y2="30" stroke="#00e5ff" stroke-width="1.5"/><line x1="9" y1="4" x2="9" y2="30" stroke="#00e5ff" stroke-width="1.5"/><line x1="45" y1="4" x2="45" y2="30" stroke="#00e5ff" stroke-width="1.5"/><line x1="49" y1="4" x2="49" y2="30" stroke="#00e5ff" stroke-width="1.5"/><text x="21" y="14" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">a</text><text x="34" y="14" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">b</text><text x="21" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">c</text><text x="34" y="27" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">d</text></svg></div><span class="rb-label">Det.‖ ‖ 2×2</span>
+    </button>
     <div class="rb-sep"></div>
-    <!-- n×m template -->
-    <button class="rb" data-ins="\begin{pmatrix} a_{11} & \cdots & a_{1n} \\ \vdots & \ddots & \vdots \\ a_{m1} & \cdots & a_{mn} \end{pmatrix}"><div class="rb-preview" data-r="\begin{pmatrix}a_{11}&\cdots&a_{1n}\\\vdots&\ddots&\vdots\\a_{m1}&\cdots&a_{mn}\end{pmatrix}"></div><span class="rb-label">Mat. n×m</span></button>
-    <button class="rb" data-ins="\begin{vmatrix} a_{11} & \cdots & a_{1n} \\ \vdots & \ddots & \vdots \\ a_{n1} & \cdots & a_{nn} \end{vmatrix}"><div class="rb-preview" data-r="\begin{vmatrix}a_{11}&\cdots&a_{1n}\\\vdots&\ddots&\vdots\\a_{n1}&\cdots&a_{nn}\end{vmatrix}"></div><span class="rb-label">Det. n×n</span></button>
+    <button class="rb" data-ins="\begin{pmatrix} a_{11} & \cdots & a_{1n} \\ \vdots & \ddots & \vdots \\ a_{m1} & \cdots & a_{mn} \end{pmatrix}">
+      <div class="rb-preview mat"><svg viewBox="0 0 66 34" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:66px"><path d="M10,3 Q6,8 6,17 Q6,26 10,31" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M56,3 Q60,8 60,17 Q60,26 56,31" stroke="#00e5ff" stroke-width="1.8" fill="none" stroke-linecap="round"/><text x="18" y="11" fill="#00e5ff" font-size="6" font-family="monospace" text-anchor="middle">a₁₁</text><text x="33" y="11" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">···</text><text x="49" y="11" fill="#00e5ff" font-size="6" font-family="monospace" text-anchor="middle">a₁ₙ</text><text x="18" y="19" fill="#00e5ff" font-size="8" font-family="monospace" text-anchor="middle">⋮</text><text x="33" y="19" fill="#00e5ff" font-size="8" font-family="monospace" text-anchor="middle">⋱</text><text x="49" y="19" fill="#00e5ff" font-size="8" font-family="monospace" text-anchor="middle">⋮</text><text x="18" y="28" fill="#00e5ff" font-size="6" font-family="monospace" text-anchor="middle">aₘ₁</text><text x="33" y="28" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">···</text><text x="49" y="28" fill="#00e5ff" font-size="6" font-family="monospace" text-anchor="middle">aₘₙ</text></svg></div><span class="rb-label">Mat.( ) n×m</span>
+    </button>
+    <button class="rb" data-ins="\begin{vmatrix} a_{11} & \cdots & a_{1n} \\ \vdots & \ddots & \vdots \\ a_{n1} & \cdots & a_{nn} \end{vmatrix}">
+      <div class="rb-preview mat"><svg viewBox="0 0 66 34" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:66px"><line x1="7" y1="3" x2="7" y2="31" stroke="#00e5ff" stroke-width="1.8"/><line x1="59" y1="3" x2="59" y2="31" stroke="#00e5ff" stroke-width="1.8"/><text x="18" y="11" fill="#00e5ff" font-size="6" font-family="monospace" text-anchor="middle">a₁₁</text><text x="33" y="11" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">···</text><text x="49" y="11" fill="#00e5ff" font-size="6" font-family="monospace" text-anchor="middle">a₁ₙ</text><text x="18" y="19" fill="#00e5ff" font-size="8" font-family="monospace" text-anchor="middle">⋮</text><text x="33" y="19" fill="#00e5ff" font-size="8" font-family="monospace" text-anchor="middle">⋱</text><text x="49" y="19" fill="#00e5ff" font-size="8" font-family="monospace" text-anchor="middle">⋮</text><text x="18" y="28" fill="#00e5ff" font-size="6" font-family="monospace" text-anchor="middle">aₘ₁</text><text x="33" y="28" fill="#00e5ff" font-size="7" font-family="monospace" text-anchor="middle">···</text><text x="49" y="28" fill="#00e5ff" font-size="6" font-family="monospace" text-anchor="middle">aₘₙ</text></svg></div><span class="rb-label">Det.| | n×n</span>
+    </button>
     <div class="rb-sep"></div>
-    <!-- Matrix builder (opens dialog) -->
     <button class="rb rb-special" id="btn-matrix-builder"><div class="rb-preview" data-r="M_{m\times n}"></div><span class="rb-label">Constructor</span></button>
-    <button class="rb rb-special" id="btn-aug-builder"><div class="rb-preview" data-r="\left(\begin{array}{cc|c}a&b&c\\d&e&f\end{array}\right)"></div><span class="rb-label">Mat. Ampliada</span></button>
+    <button class="rb rb-special" id="btn-aug-builder">
+      <div class="rb-preview mat"><svg viewBox="0 0 70 34" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:70px"><path d="M9,4 Q5,9 5,17 Q5,25 9,30" stroke="#00ff9d" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M61,4 Q65,9 65,17 Q65,25 61,30" stroke="#00ff9d" stroke-width="1.8" fill="none" stroke-linecap="round"/><line x1="47" y1="6" x2="47" y2="28" stroke="#00ff9d" stroke-width="1.5"/><text x="19" y="13" fill="#00ff9d" font-size="7" font-family="monospace" text-anchor="middle">a</text><text x="32" y="13" fill="#00ff9d" font-size="7" font-family="monospace" text-anchor="middle">b</text><text x="55" y="13" fill="#00ff9d" font-size="7" font-family="monospace" text-anchor="middle">c</text><text x="19" y="27" fill="#00ff9d" font-size="7" font-family="monospace" text-anchor="middle">d</text><text x="32" y="27" fill="#00ff9d" font-size="7" font-family="monospace" text-anchor="middle">e</text><text x="55" y="27" fill="#00ff9d" font-size="7" font-family="monospace" text-anchor="middle">f</text></svg></div><span class="rb-label">Mat.Ampliada</span>
+    </button>
     <div class="rb-sep"></div>
     <button class="rb" data-ins="A^{T}"><div class="rb-preview" data-r="A^{T}"></div><span class="rb-label">Transpuesta</span></button>
     <button class="rb" data-ins="A^{-1}"><div class="rb-preview" data-r="A^{-1}"></div><span class="rb-label">Inversa</span></button>
@@ -230,6 +252,8 @@ footer span{color:var(--cyan);}
     <div class="rb-sep"></div>
     <button class="rb" data-ins="\bar{x}"><div class="rb-preview" data-r="\bar{x}"></div><span class="rb-label">Media x̄</span></button>
     <button class="rb" data-ins="\bar{X}"><div class="rb-preview" data-r="\bar{X}"></div><span class="rb-label">Media X̄</span></button>
+    <button class="rb" data-ins="\bar{\bar{x}}"><div class="rb-preview" data-r="\bar{\bar{x}}"></div><span class="rb-label">Gran media x̿</span></button>
+    <button class="rb" data-ins="\bar{\bar{X}}"><div class="rb-preview" data-r="\bar{\bar{X}}"></div><span class="rb-label">Gran media X̿</span></button>
     <button class="rb" data-ins="\sigma"><div class="rb-preview" data-r="\sigma"></div><span class="rb-label">Sigma σ</span></button>
     <button class="rb" data-ins="\sigma^{2}"><div class="rb-preview" data-r="\sigma^2"></div><span class="rb-label">Varianza σ²</span></button>
     <button class="rb" data-ins="\mu"><div class="rb-preview" data-r="\mu"></div><span class="rb-label">Media μ</span></button>
@@ -274,6 +298,13 @@ footer span{color:var(--cyan);}
     <button class="rb" data-ins="\mathbb{C}"><div class="rb-preview" data-r="\mathbb{C}"></div><span class="rb-label">Complejos ℂ</span></button>
     <button class="rb" data-ins="\mathbb{P}"><div class="rb-preview" data-r="\mathbb{P}"></div><span class="rb-label">Primos ℙ</span></button>
     <button class="rb" data-ins="\emptyset"><div class="rb-preview" data-r="\emptyset"></div><span class="rb-label">Vacío ∅</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\aleph"><div class="rb-preview" data-r="\aleph"></div><span class="rb-label">Aleph ℵ</span></button>
+    <button class="rb" data-ins="\aleph_0"><div class="rb-preview" data-r="\aleph_0"></div><span class="rb-label">Aleph-0 ℵ₀</span></button>
+    <button class="rb" data-ins="\aleph_1"><div class="rb-preview" data-r="\aleph_1"></div><span class="rb-label">Aleph-1 ℵ₁</span></button>
+    <button class="rb" data-ins="\aleph_n"><div class="rb-preview" data-r="\aleph_n"></div><span class="rb-label">Aleph-n ℵₙ</span></button>
+    <button class="rb" data-ins="\beth"><div class="rb-preview" data-r="\beth"></div><span class="rb-label">Beth ℶ</span></button>
+    <button class="rb" data-ins="\gimel"><div class="rb-preview" data-r="\gimel"></div><span class="rb-label">Gimel ℷ</span></button>
   </div>
 
   <!-- ═══ TAB 6: CONSTANTES & VALORES ═══ -->
@@ -304,6 +335,26 @@ footer span{color:var(--cyan);}
     <button class="rb" data-ins="i"><div class="rb-preview" data-r="i=\sqrt{-1}"></div><span class="rb-label">Imag. i</span></button>
     <button class="rb" data-ins="a + bi"><div class="rb-preview" data-r="a+bi"></div><span class="rb-label">Complejo</span></button>
     <button class="rb" data-ins="\|z\| = \sqrt{a^2 + b^2}"><div class="rb-preview" data-r="\|z\|"></div><span class="rb-label">Módulo |z|</span></button>
+    <div class="rb-sep"></div>
+    <!-- Transformadas -->
+    <button class="rb" data-ins="\mathcal{L}"><div class="rb-preview" data-r="\mathcal{L}"></div><span class="rb-label">Laplace ℒ</span></button>
+    <button class="rb" data-ins="\mathcal{L}\{f(t)\}"><div class="rb-preview" data-r="\mathcal{L}\{f(t)\}"></div><span class="rb-label">ℒ{f(t)}</span></button>
+    <button class="rb" data-ins="\mathcal{L}^{-1}\{F(s)\}"><div class="rb-preview" data-r="\mathcal{L}^{-1}\{F(s)\}"></div><span class="rb-label">ℒ⁻¹ inversa</span></button>
+    <button class="rb" data-ins="\mathcal{L}\{f(t)\} = \int_{0}^{\infty} f(t)\, e^{-st}\, dt"><div class="rb-preview" data-r="\mathcal{L}\{f\}=\int_0^\infty\!f\,e^{-st}dt"></div><span class="rb-label">Def. Laplace</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\mathcal{F}"><div class="rb-preview" data-r="\mathcal{F}"></div><span class="rb-label">Fourier ℱ</span></button>
+    <button class="rb" data-ins="\mathcal{F}\{f(t)\}"><div class="rb-preview" data-r="\mathcal{F}\{f(t)\}"></div><span class="rb-label">ℱ{f(t)}</span></button>
+    <button class="rb" data-ins="\mathcal{F}\{f(t)\} = \int_{-\infty}^{\infty} f(t)\, e^{-i\omega t}\, dt"><div class="rb-preview" data-r="\mathcal{F}\{f\}=\int_{-\infty}^{\infty}\!f\,e^{-i\omega t}dt"></div><span class="rb-label">Def. Fourier</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\mathcal{Z}"><div class="rb-preview" data-r="\mathcal{Z}"></div><span class="rb-label">Z-transf. 𝒵</span></button>
+    <button class="rb" data-ins="\mathcal{Z}\{x[n]\}"><div class="rb-preview" data-r="\mathcal{Z}\{x[n]\}"></div><span class="rb-label">𝒵{x[n]}</span></button>
+    <button class="rb" data-ins="\mathcal{Z}\{x[n]\} = \sum_{n=-\infty}^{\infty} x[n]\, z^{-n}"><div class="rb-preview" data-r="\mathcal{Z}\{x\}=\sum_{n=-\infty}^{\infty}x[n]z^{-n}"></div><span class="rb-label">Def. Z</span></button>
+    <div class="rb-sep"></div>
+    <button class="rb" data-ins="\mathcal{L}\{f'(t)\} = sF(s) - f(0)"><div class="rb-preview" data-r="\mathcal{L}\{f'\}=sF(s)-f(0)"></div><span class="rb-label">ℒ deriv. 1ª</span></button>
+    <button class="rb" data-ins="\mathcal{L}\{f''(t)\} = s^{2}F(s) - sf(0) - f'(0)"><div class="rb-preview" data-r="\mathcal{L}\{f''\}=s^2F(s)-sf(0)-f'(0)"></div><span class="rb-label">ℒ deriv. 2ª</span></button>
+    <button class="rb" data-ins="\mathcal{L}\{e^{at}\} = \frac{1}{s-a}"><div class="rb-preview" data-r="\mathcal{L}\{e^{at}\}=\frac{1}{s-a}"></div><span class="rb-label">ℒ exponenc.</span></button>
+    <button class="rb" data-ins="\mathcal{L}\{\sin(\omega t)\} = \frac{\omega}{s^{2}+\omega^{2}}"><div class="rb-preview" data-r="\mathcal{L}\{\sin\omega t\}=\frac{\omega}{s^2+\omega^2}"></div><span class="rb-label">ℒ seno</span></button>
+    <button class="rb" data-ins="\mathcal{L}\{\cos(\omega t)\} = \frac{s}{s^{2}+\omega^{2}}"><div class="rb-preview" data-r="\mathcal{L}\{\cos\omega t\}=\frac{s}{s^2+\omega^2}"></div><span class="rb-label">ℒ coseno</span></button>
   </div>
 
   <!-- ═══ TAB 7: LETRAS GRIEGAS ═══ -->
@@ -382,6 +433,97 @@ footer span{color:var(--cyan);}
     <button class="rb" data-ins="\left( \begin{array}{cc|cc} a & b & c & d \\ e & f & g & h \end{array} \right)"><div class="rb-preview" data-r="\left(\begin{array}{cc|cc}a&b&c&d\\e&f&g&h\end{array}\right)"></div><span class="rb-label">Amp. 2|2</span></button>
     <button class="rb rb-special" id="btn-aug-builder2"><div class="rb-preview" data-r="\left(\begin{array}{ccc|c}\cdots\end{array}\right)"></div><span class="rb-label">Amp. n×m|k</span></button>
   </div>
+  <!-- ═══ TAB 9: SUB/SUPERÍNDICES & BARRA VERTICAL ═══ -->
+  <div class="tab-panel" id="tab-subsuper">
+    <!-- Superíndices comunes -->
+    <button class="rb" data-ins="^{2}"><div class="rb-preview" data-r="x^{2}"></div><span class="rb-label">Cuadrado ²</span></button>
+    <button class="rb" data-ins="^{3}"><div class="rb-preview" data-r="x^{3}"></div><span class="rb-label">Cúbico ³</span></button>
+    <button class="rb" data-ins="^{n}"><div class="rb-preview" data-r="x^{n}"></div><span class="rb-label">Potencia n</span></button>
+    <button class="rb" data-ins="^{-1}"><div class="rb-preview" data-r="x^{-1}"></div><span class="rb-label">Inverso ⁻¹</span></button>
+    <button class="rb" data-ins="^{-n}"><div class="rb-preview" data-r="x^{-n}"></div><span class="rb-label">Potencia -n</span></button>
+    <button class="rb" data-ins="^{1/2}"><div class="rb-preview" data-r="x^{1/2}"></div><span class="rb-label">Raíz ½</span></button>
+    <button class="rb" data-ins="^{T}"><div class="rb-preview" data-r="A^{T}"></div><span class="rb-label">Transpuesta ᵀ</span></button>
+    <button class="rb" data-ins="^{*}"><div class="rb-preview" data-r="A^{*}"></div><span class="rb-label">Conjugada *</span></button>
+    <button class="rb" data-ins="^{\dagger}"><div class="rb-preview" data-r="A^{\dagger}"></div><span class="rb-label">Dagger †</span></button>
+    <button class="rb" data-ins="^{\prime}"><div class="rb-preview" data-r="f^{\prime}"></div><span class="rb-label">Prima f′</span></button>
+    <button class="rb" data-ins="^{\prime\prime}"><div class="rb-preview" data-r="f^{\prime\prime}"></div><span class="rb-label">2ª prima f″</span></button>
+    <button class="rb" data-ins="^{+}"><div class="rb-preview" data-r="x^{+}"></div><span class="rb-label">Superínd. +</span></button>
+    <button class="rb" data-ins="^{-}"><div class="rb-preview" data-r="x^{-}"></div><span class="rb-label">Superínd. −</span></button>
+    <button class="rb" data-ins="^{0}"><div class="rb-preview" data-r="x^{0}"></div><span class="rb-label">Potencia 0</span></button>
+    <div class="rb-sep"></div>
+    <!-- Notación de puntos — Newton (derivadas temporales ẋ ẍ) -->
+    <button class="rb" data-ins="\dot{x}"><div class="rb-preview" data-r="\dot{x}"></div><span class="rb-label">Un punto ẋ</span></button>
+    <button class="rb" data-ins="\dot{X}"><div class="rb-preview" data-r="\dot{X}"></div><span class="rb-label">Un punto Ẋ</span></button>
+    <button class="rb" data-ins="\dot{q}"><div class="rb-preview" data-r="\dot{q}"></div><span class="rb-label">Un punto q̇</span></button>
+    <button class="rb" data-ins="\ddot{x}"><div class="rb-preview" data-r="\ddot{x}"></div><span class="rb-label">Dos puntos ẍ</span></button>
+    <button class="rb" data-ins="\ddot{X}"><div class="rb-preview" data-r="\ddot{X}"></div><span class="rb-label">Dos puntos Ẍ</span></button>
+    <button class="rb" data-ins="\ddot{q}"><div class="rb-preview" data-r="\ddot{q}"></div><span class="rb-label">Dos puntos q̈</span></button>
+    <button class="rb" data-ins="\overset{\scriptscriptstyle\ldots}{x}"><div class="rb-preview" data-r="\overset{\scriptscriptstyle\ldots}{x}"></div><span class="rb-label">Tres puntos x⃛</span></button>
+    <button class="rb" data-ins="\overset{\scriptscriptstyle\ldots\!.}{x}"><div class="rb-preview" data-r="\overset{\scriptscriptstyle\ldots\!.}{x}"></div><span class="rb-label">Cuatro ptos x⃜</span></button>
+    <!-- Doble barra — gran media -->
+    <button class="rb" data-ins="\bar{\bar{x}}"><div class="rb-preview" data-r="\bar{\bar{x}}"></div><span class="rb-label">Doble barra x̿</span></button>
+    <button class="rb" data-ins="\bar{\bar{X}}"><div class="rb-preview" data-r="\bar{\bar{X}}"></div><span class="rb-label">Doble barra X̿</span></button>
+    <!-- Otros acentos útiles -->
+    <button class="rb" data-ins="\tilde{x}"><div class="rb-preview" data-r="\tilde{x}"></div><span class="rb-label">Tilde x̃</span></button>
+    <button class="rb" data-ins="\tilde{X}"><div class="rb-preview" data-r="\tilde{X}"></div><span class="rb-label">Tilde X̃</span></button>
+    <button class="rb" data-ins="\hat{x}"><div class="rb-preview" data-r="\hat{x}"></div><span class="rb-label">Sombrero x̂</span></button>
+    <button class="rb" data-ins="\hat{X}"><div class="rb-preview" data-r="\hat{X}"></div><span class="rb-label">Sombrero X̂</span></button>
+    <button class="rb" data-ins="\vec{x}"><div class="rb-preview" data-r="\vec{x}"></div><span class="rb-label">Flecha x⃗</span></button>
+    <button class="rb" data-ins="\check{x}"><div class="rb-preview" data-r="\check{x}"></div><span class="rb-label">Check x̌</span></button>
+    <button class="rb" data-ins="\breve{x}"><div class="rb-preview" data-r="\breve{x}"></div><span class="rb-label">Breve x̆</span></button>
+    <button class="rb" data-ins="\acute{x}"><div class="rb-preview" data-r="\acute{x}"></div><span class="rb-label">Acento x́</span></button>
+    <button class="rb" data-ins="\grave{x}"><div class="rb-preview" data-r="\grave{x}"></div><span class="rb-label">Grave x̀</span></button>
+    <button class="rb" data-ins="\mathring{x}"><div class="rb-preview" data-r="\mathring{x}"></div><span class="rb-label">Anillo x̊</span></button>
+    <!-- Subíndices comunes -->
+    <button class="rb" data-ins="_{i}"><div class="rb-preview" data-r="x_{i}"></div><span class="rb-label">Subínd. i</span></button>
+    <button class="rb" data-ins="_{j}"><div class="rb-preview" data-r="x_{j}"></div><span class="rb-label">Subínd. j</span></button>
+    <button class="rb" data-ins="_{k}"><div class="rb-preview" data-r="x_{k}"></div><span class="rb-label">Subínd. k</span></button>
+    <button class="rb" data-ins="_{n}"><div class="rb-preview" data-r="x_{n}"></div><span class="rb-label">Subínd. n</span></button>
+    <button class="rb" data-ins="_{m}"><div class="rb-preview" data-r="x_{m}"></div><span class="rb-label">Subínd. m</span></button>
+    <button class="rb" data-ins="_{0}"><div class="rb-preview" data-r="x_{0}"></div><span class="rb-label">Subínd. 0</span></button>
+    <button class="rb" data-ins="_{1}"><div class="rb-preview" data-r="x_{1}"></div><span class="rb-label">Subínd. 1</span></button>
+    <button class="rb" data-ins="_{\max}"><div class="rb-preview" data-r="x_{\max}"></div><span class="rb-label">Subínd. max</span></button>
+    <button class="rb" data-ins="_{\min}"><div class="rb-preview" data-r="x_{\min}"></div><span class="rb-label">Subínd. min</span></button>
+    <button class="rb" data-ins="_{\alpha}"><div class="rb-preview" data-r="x_{\alpha}"></div><span class="rb-label">Subínd. α</span></button>
+    <button class="rb" data-ins="_{ij}"><div class="rb-preview" data-r="a_{ij}"></div><span class="rb-label">Subínd. ij</span></button>
+    <button class="rb" data-ins="_{i,j}"><div class="rb-preview" data-r="a_{i,j}"></div><span class="rb-label">Subínd. i,j</span></button>
+    <button class="rb" data-ins="_{n-1}"><div class="rb-preview" data-r="x_{n-1}"></div><span class="rb-label">Subínd. n-1</span></button>
+    <button class="rb" data-ins="_{n+1}"><div class="rb-preview" data-r="x_{n+1}"></div><span class="rb-label">Subínd. n+1</span></button>
+    <div class="rb-sep"></div>
+    <!-- Combinados sup+sub -->
+    <button class="rb" data-ins="_{i}^{j}"><div class="rb-preview" data-r="x_{i}^{j}"></div><span class="rb-label">Sub+Sup i,j</span></button>
+    <button class="rb" data-ins="_{i=1}^{n}"><div class="rb-preview" data-r="x_{i=1}^{n}"></div><span class="rb-label">Desde i=1 a n</span></button>
+    <button class="rb" data-ins="_{k=0}^{\infty}"><div class="rb-preview" data-r="x_{k=0}^{\infty}"></div><span class="rb-label">Desde 0 a ∞</span></button>
+    <div class="rb-sep"></div>
+    <!-- Subíndice y superíndice a la IZQUIERDA -->
+    <button class="rb" data-ins="{}_{n}"><div class="rb-preview" data-r="{}_{n}x"></div><span class="rb-label">Sub izq.</span></button>
+    <button class="rb" data-ins="{}^{n}"><div class="rb-preview" data-r="{}^{n}x"></div><span class="rb-label">Sup izq.</span></button>
+    <button class="rb" data-ins="{}_{i}^{j}"><div class="rb-preview" data-r="{}_{i}^{j}x"></div><span class="rb-label">Sub+Sup izq.</span></button>
+    <button class="rb" data-ins="{}^{A}_{Z}"><div class="rb-preview" data-r="{}^{A}_{Z}X"></div><span class="rb-label">Notac. nuclear</span></button>
+    <!-- Subíndice y superíndice a la DERECHA explícito -->
+    <button class="rb" data-ins="x{}_{n}"><div class="rb-preview" data-r="x{}_{n}"></div><span class="rb-label">Sub der.</span></button>
+    <button class="rb" data-ins="x{}^{n}"><div class="rb-preview" data-r="x{}^{n}"></div><span class="rb-label">Sup der.</span></button>
+    <button class="rb" data-ins="x{}_{i}^{j}"><div class="rb-preview" data-r="x{}_{i}^{j}"></div><span class="rb-label">Sub+Sup der.</span></button>
+    <!-- Tensores con índices arriba y abajo a ambos lados -->
+    <button class="rb" data-ins="{}^{\mu}{}_{\nu}"><div class="rb-preview" data-r="{}^{\mu}{}_{\nu}T"></div><span class="rb-label">Tensor μν</span></button>
+    <button class="rb" data-ins="T^{\mu}{}_{\nu}"><div class="rb-preview" data-r="T^{\mu}{}_{\nu}"></div><span class="rb-label">Tensor T^μ_ν</span></button>
+    <button class="rb" data-ins="T^{\mu\nu}"><div class="rb-preview" data-r="T^{\mu\nu}"></div><span class="rb-label">Tensor T^μν</span></button>
+    <button class="rb" data-ins="T_{\mu\nu}"><div class="rb-preview" data-r="T_{\mu\nu}"></div><span class="rb-label">Tensor T_μν</span></button>
+    <div class="rb-sep"></div>
+    <!-- Barra vertical y relacionados -->
+    <button class="rb" data-ins="\mid"><div class="rb-preview" data-r="a \mid b"></div><span class="rb-label">Barra | mid</span></button>
+    <button class="rb" data-ins="\bigg|_{x=}^{ }"><div class="rb-preview" data-r="\Big|_{a}^{b}"></div><span class="rb-label">Eval. barra</span></button>
+    <button class="rb" data-ins="\left. \frac{ }{ } \right|_{x=}"><div class="rb-preview" data-r="\left.\frac{d}{dx}\right|_{x=0}"></div><span class="rb-label">Deriv. eval.</span></button>
+    <button class="rb" data-ins="\left\{ \begin{array}{ll}  & \text{si }  \\  & \text{si } \end{array} \right."><div class="rb-preview" data-r="\left\{\begin{array}{ll}f_1&\text{si }c_1\\f_2&\text{si }c_2\end{array}\right."></div><span class="rb-label">{ condic. 2</span></button>
+    <button class="rb" data-ins="\left\{ \begin{array}{ll}  & \text{si }  \\  & \text{si }  \\  & \text{si } \end{array} \right."><div class="rb-preview" data-r="\left\{\begin{array}{ll}f_1&\text{si }c_1\\f_2&\text{si }c_2\\f_3&\text{si }c_3\end{array}\right."></div><span class="rb-label">{ condic. 3</span></button>
+    <button class="rb" data-ins="\underbrace{ }_{\text{}}"><div class="rb-preview" data-r="\underbrace{abc}_{\text{label}}"></div><span class="rb-label">Underbrace</span></button>
+    <button class="rb" data-ins="\overbrace{ }^{\text{}}"><div class="rb-preview" data-r="\overbrace{abc}^{\text{label}}"></div><span class="rb-label">Overbrace</span></button>
+    <button class="rb" data-ins="\underset{ }{ }"><div class="rb-preview" data-r="\underset{x\to 0}{\lim}"></div><span class="rb-label">Underset</span></button>
+    <button class="rb" data-ins="\overset{ }{ }"><div class="rb-preview" data-r="\overset{\Delta}{=}"></div><span class="rb-label">Overset</span></button>
+    <button class="rb" data-ins="\stackrel{ }{ }"><div class="rb-preview" data-r="\stackrel{?}{=}"></div><span class="rb-label">Stackrel</span></button>
+  </div>
+
+
 </div>
 
 <!-- ══ MATRIX BUILDER MODAL ══ -->
